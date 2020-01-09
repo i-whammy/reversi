@@ -1,24 +1,35 @@
 package com.whammy
 
+import com.whammy.domain.Board
 import com.whammy.domain.Move
 import com.whammy.domain.OutOfRangeException
+import com.whammy.domain.Stone
 import kotlin.system.exitProcess
 
 fun main(args: Array<String>) {
     println("Hello, reversi!")
 
-    println("|-|-|-|-|-|-|-|-|")
-    println("|-|-|-|-|-|-|-|-|")
-    println("|-|-|-|-|-|-|-|-|")
-    println("|-|-|-|x|o|-|-|-|")
-    println("|-|-|-|o|x|-|-|-|")
-    println("|-|-|-|-|-|-|-|-|")
-    println("|-|-|-|-|-|-|-|-|")
-    println("|-|-|-|-|-|-|-|-|")
+    printBoard()
 
     handleMove()
 
     exitProcess(0)
+}
+
+private fun printBoard() {
+    val board = Board()
+    board.lines.map {
+        var str = "|"
+        it.stones.map {stone ->
+            str += when (stone) {
+                Stone.BLACK -> "x"
+                Stone.WHITE -> "o"
+                else -> "-"
+            }
+            str += "|"
+        }
+        println(str)
+    }
 }
 
 private fun handleMove() {
