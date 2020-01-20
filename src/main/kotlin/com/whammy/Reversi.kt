@@ -8,17 +8,17 @@ import kotlin.system.exitProcess
 
 fun main(args: Array<String>) {
     println("Hello, reversi!")
+    val board = Board()
 
-    printBoard()
+    board.printBoard()
 
-    handleMove()
+    handleMove(board)
 
     exitProcess(0)
 }
 
-private fun printBoard() {
-    val board = Board()
-    board.lines.map {
+private fun Board.printBoard() {
+    this.lines.map {
         var str = "|"
         it.stones.map {stone ->
             str += when (stone) {
@@ -32,17 +32,18 @@ private fun printBoard() {
     }
 }
 
-private fun handleMove() {
+private fun handleMove(board: Board) {
     println("Your turn.")
     println("Input number like 3 5.")
     // TODO Handle null, non-Integer value
     val (v, h) = readLine()!!.split(" ").map { it.toInt() }
     try {
-        Move(v, h)
+        val move = Move(v, h, Stone.BLACK)
+        board.add(move)
         println("Accepted. Vertical : $v, horizontal : $h")
     } catch (e: OutOfRangeException) {
         println(e.message)
-        handleMove()
+        handleMove(board)
     }
 }
 

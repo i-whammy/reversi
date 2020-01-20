@@ -2,7 +2,7 @@ package com.whammy.domain
 
 import java.lang.Exception
 
-class Move(vertical: Int, horizontal: Int) {
+class Move(val vertical: Int, val horizontal: Int, val stone: Stone) {
     init {
         if (1 > vertical || 8 < vertical ||
             1 > horizontal || 8 < horizontal) {
