@@ -1,9 +1,6 @@
 package com.whammy
 
-import com.whammy.domain.Board
-import com.whammy.domain.Move
-import com.whammy.domain.OutOfRangeException
-import com.whammy.domain.Stone
+import com.whammy.domain.*
 import kotlin.system.exitProcess
 
 fun main(args: Array<String>) {
@@ -35,12 +32,12 @@ private fun Board.printBoard() {
 private fun handleMove(board: Board) {
     println("Your turn.")
     println("Input number like 3 5.")
-    // TODO Handle null, non-Integer value
+    // TODO Handle null, non-Integer v
     val (v, h) = readLine()!!.split(" ").map { it.toInt() }
     try {
-        val move = Move(v, h, Stone.BLACK)
-        board.add(move)
+        val move = Move(Vertical(v), Horizontal(h), Stone.BLACK)
         println("Accepted. Vertical : $v, horizontal : $h")
+        board.add(move).printBoard()
     } catch (e: OutOfRangeException) {
         println(e.message)
         handleMove(board)
