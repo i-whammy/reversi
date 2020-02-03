@@ -18,8 +18,8 @@ class Board {
                 // TODO 斜めの実装
                 Direction.Left -> turnAtLeft(move)
                 Direction.Right -> turnAtRight(move)
-                Direction.Up -> turnAtUp(move)
-                Direction.Low -> turnAtLow(move)
+                Direction.Top -> turnAtTop(move)
+                Direction.Bottom -> turnAtBottom(move)
             }
         }
         return this
@@ -27,20 +27,20 @@ class Board {
 
     fun getTurnableDirections(move: Move): List<Direction> {
         val directions = mutableListOf<Direction>()
-        if (!move.vertical.isUpperEdge() && !move.horizontal.isLeftEdge() &&
-            this.getAt(Vertical(move.vertical.v-1), Horizontal(move.horizontal.v-1)) == move.stone.opposite()) directions.add(Direction.UpperLeft)
-        if (!move.vertical.isUpperEdge() &&
-            this.getAt(Vertical(move.vertical.v-1), move.horizontal) == move.stone.opposite()) directions.add(Direction.Up)
-        if (!move.vertical.isUpperEdge() && !move.horizontal.isRightEdge() &&
-            this.getAt(Vertical(move.vertical.v-1), Horizontal(move.horizontal.v+1)) == move.stone.opposite()) directions.add(Direction.UpperRight)
+        if (!move.vertical.isTopEdge() && !move.horizontal.isLeftEdge() &&
+            this.getAt(Vertical(move.vertical.v-1), Horizontal(move.horizontal.v-1)) == move.stone.opposite()) directions.add(Direction.TopLeft)
+        if (!move.vertical.isTopEdge() &&
+            this.getAt(Vertical(move.vertical.v-1), move.horizontal) == move.stone.opposite()) directions.add(Direction.Top)
+        if (!move.vertical.isTopEdge() && !move.horizontal.isRightEdge() &&
+            this.getAt(Vertical(move.vertical.v-1), Horizontal(move.horizontal.v+1)) == move.stone.opposite()) directions.add(Direction.TopRight)
         if (!move.horizontal.isRightEdge() &&
             this.getAt(move.vertical, Horizontal(move.horizontal.v+1)) == move.stone.opposite()) directions.add(Direction.Right)
-        if (!move.horizontal.isRightEdge() && !move.vertical.isLowerEdge() &&
-            this.getAt(Vertical(move.vertical.v+1), Horizontal(move.horizontal.v+1)) == move.stone.opposite()) directions.add(Direction.LowerRight)
-        if (!move.vertical.isLowerEdge() &&
-            this.getAt(Vertical(move.vertical.v+1), move.horizontal) == move.stone.opposite()) directions.add(Direction.Low)
-        if (!move.vertical.isLowerEdge() && !move.horizontal.isLeftEdge() &&
-            this.getAt(Vertical(move.vertical.v+1), Horizontal(move.horizontal.v-1)) == move.stone.opposite()) directions.add(Direction.LowerLeft)
+        if (!move.horizontal.isRightEdge() && !move.vertical.isBottomEdge() &&
+            this.getAt(Vertical(move.vertical.v+1), Horizontal(move.horizontal.v+1)) == move.stone.opposite()) directions.add(Direction.BottomRight)
+        if (!move.vertical.isBottomEdge() &&
+            this.getAt(Vertical(move.vertical.v+1), move.horizontal) == move.stone.opposite()) directions.add(Direction.Bottom)
+        if (!move.vertical.isBottomEdge() && !move.horizontal.isLeftEdge() &&
+            this.getAt(Vertical(move.vertical.v+1), Horizontal(move.horizontal.v-1)) == move.stone.opposite()) directions.add(Direction.BottomLeft)
         if (!move.horizontal.isLeftEdge() &&
             this.getAt(move.vertical, Horizontal(move.horizontal.v-1)) == move.stone.opposite()) directions.add(Direction.Left)
         return directions
@@ -72,24 +72,12 @@ class Board {
         }
     }
 
-    private fun turnAtUp(move: Move) {
-        if (this.lines[move.vertical.v - 1].stones.subList(0,move.horizontal.v-1).contains(move.stone)
-            && !this.lines[move.vertical.v-1].stones.subList(0,move.horizontal.v-1).contains(Stone.NONE)) {
-            for (i in move.horizontal.v - 2 downTo 0) {
-                if (this.lines[move.vertical.v - 1].stones[i] == move.stone) break
-                this.lines[move.vertical.v - 1].stones[i] = move.stone
-            }
-        }
+    private fun turnAtTop(move: Move) {
+        //TODO
     }
 
-    private fun turnAtLow(move: Move) {
-        if (this.lines[move.vertical.v - 1].stones.subList(0,move.horizontal.v-1).contains(move.stone)
-            && !this.lines[move.vertical.v-1].stones.subList(0,move.horizontal.v-1).contains(Stone.NONE)) {
-            for (i in move.horizontal.v - 2 downTo 0) {
-                if (this.lines[move.vertical.v - 1].stones[i] == move.stone) break
-                this.lines[move.vertical.v - 1].stones[i] = move.stone
-            }
-        }
+    private fun turnAtBottom(move: Move) {
+        //TODO
     }
 
 }

@@ -37,7 +37,7 @@ class BoardTest {
         val board = Board()
         board.add(Move(Vertical(5), Horizontal(6), Stone.BLACK))
         board.add(Move(Vertical(4), Horizontal(6), Stone.WHITE))
-        val expected = listOf(Direction.Low, Direction.LowerLeft)
+        val expected = listOf(Direction.Bottom, Direction.BottomLeft)
         assertEquals(expected, board.getTurnableDirections(Move(Vertical(3),Horizontal(6),Stone.BLACK)))
     }
 

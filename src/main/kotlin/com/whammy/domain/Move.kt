@@ -5,8 +5,8 @@ import java.lang.Exception
 class Move(val vertical: Vertical, val horizontal: Horizontal, val stone: Stone)
 
 data class Vertical(val v: Int): Point(v) {
-    fun isUpperEdge() = v == 1
-    fun isLowerEdge() = v == 8
+    fun isTopEdge() = v == 1
+    fun isBottomEdge() = v == 8
 }
 
 data class Horizontal(val v: Int): Point(v) {
