@@ -11,7 +11,7 @@ class Board {
     }
 
     fun add(move: Move) : Board {
-        this.lines[move.vertical.v - 1].stones[move.horizontal.v - 1] = move.stone
+        this.lines[move.point.verticalCoordinate.value - 1].stones[move.point.horizontalCoordinate.value - 1] = move.stone
         val turnables = this.getTurnableDirections(move)
         turnables.forEach {
             when (it) {
@@ -27,47 +27,55 @@ class Board {
 
     fun getTurnableDirections(move: Move): List<Direction> {
         val directions = mutableListOf<Direction>()
-        if (!move.vertical.isTopEdge() && !move.horizontal.isLeftEdge() &&
-            this.getAt(Vertical(move.vertical.v-1), Horizontal(move.horizontal.v-1)) == move.stone.opposite()) directions.add(Direction.TopLeft)
-        if (!move.vertical.isTopEdge() &&
-            this.getAt(Vertical(move.vertical.v-1), move.horizontal) == move.stone.opposite()) directions.add(Direction.Top)
-        if (!move.vertical.isTopEdge() && !move.horizontal.isRightEdge() &&
-            this.getAt(Vertical(move.vertical.v-1), Horizontal(move.horizontal.v+1)) == move.stone.opposite()) directions.add(Direction.TopRight)
-        if (!move.horizontal.isRightEdge() &&
-            this.getAt(move.vertical, Horizontal(move.horizontal.v+1)) == move.stone.opposite()) directions.add(Direction.Right)
-        if (!move.horizontal.isRightEdge() && !move.vertical.isBottomEdge() &&
-            this.getAt(Vertical(move.vertical.v+1), Horizontal(move.horizontal.v+1)) == move.stone.opposite()) directions.add(Direction.BottomRight)
-        if (!move.vertical.isBottomEdge() &&
-            this.getAt(Vertical(move.vertical.v+1), move.horizontal) == move.stone.opposite()) directions.add(Direction.Bottom)
-        if (!move.vertical.isBottomEdge() && !move.horizontal.isLeftEdge() &&
-            this.getAt(Vertical(move.vertical.v+1), Horizontal(move.horizontal.v-1)) == move.stone.opposite()) directions.add(Direction.BottomLeft)
-        if (!move.horizontal.isLeftEdge() &&
-            this.getAt(move.vertical, Horizontal(move.horizontal.v-1)) == move.stone.opposite()) directions.add(Direction.Left)
+        val point = move.point
+        val stone = move.stone
+        if (!point.verticalCoordinate.isTopEdge() && !point.horizontalCoordinate.isLeftEdge() &&
+            this.getAt(Point(VerticalCoordinate(point.verticalCoordinate.value-1), HorizontalCoordinate(point.horizontalCoordinate.value-1))) == stone.opposite()) directions.add(Direction.TopLeft)
+        if (!point.verticalCoordinate.isTopEdge() &&
+            this.getAt(Point(VerticalCoordinate(point.verticalCoordinate.value-1), point.horizontalCoordinate)) == move.stone.opposite()) directions.add(Direction.Top)
+        if (!point.verticalCoordinate.isTopEdge() && !point.horizontalCoordinate.isRightEdge() &&
+            this.getAt(Point(VerticalCoordinate(point.verticalCoordinate.value-1), HorizontalCoordinate(point.horizontalCoordinate.value+1))) == stone.opposite()) directions.add(Direction.TopRight)
+        if (!point.horizontalCoordinate.isRightEdge() &&
+            this.getAt(Point(point.verticalCoordinate, HorizontalCoordinate(point.horizontalCoordinate.value+1))) == stone.opposite()) directions.add(Direction.Right)
+        if (!point.horizontalCoordinate.isRightEdge() && !point.verticalCoordinate.isBottomEdge() &&
+            this.getAt(Point(VerticalCoordinate(point.verticalCoordinate.value+1), HorizontalCoordinate(point.horizontalCoordinate.value+1))) == stone.opposite()) directions.add(Direction.BottomRight)
+        if (!point.verticalCoordinate.isBottomEdge() &&
+            this.getAt(Point(VerticalCoordinate(point.verticalCoordinate.value+1), point.horizontalCoordinate)) == stone.opposite()) directions.add(Direction.Bottom)
+        if (!point.verticalCoordinate.isBottomEdge() && !point.horizontalCoordinate.isLeftEdge() &&
+            this.getAt(Point(VerticalCoordinate(point.verticalCoordinate.value+1), HorizontalCoordinate(point.horizontalCoordinate.value-1))) == stone.opposite()) directions.add(Direction.BottomLeft)
+        if (!point.horizontalCoordinate.isLeftEdge() &&
+            this.getAt(Point(point.verticalCoordinate, HorizontalCoordinate(point.horizontalCoordinate.value-1))) == stone.opposite()) directions.add(Direction.Left)
         return directions
     }
 
-    fun getAt(vertical: Vertical, horizontal: Horizontal): Stone {
-        return this.lines[vertical.v-1].stones[horizontal.v-1]
+    fun getAt(point: Point): Stone {
+        return this.lines[point.verticalCoordinate.value-1].stones[point.horizontalCoordinate.value-1]
     }
 
     private fun turnAtLeft(move: Move) {
-        val targetStones = this.lines[move.vertical.v - 1].stones.subList(0, move.horizontal.v - 1)
+        val verticalCoordinate = move.point.verticalCoordinate
+        val horizontalCoordinate = move.point.horizontalCoordinate
+
+        val targetStones = this.lines[verticalCoordinate.value-1].stones.subList(0, horizontalCoordinate.value-1)
         if (targetStones.contains(move.stone)
             && !targetStones.subList(targetStones.lastIndexOf(move.stone), targetStones.size).contains(Stone.NONE)) {
-            for (i in move.horizontal.v - 2 downTo 0) {
-                if (this.lines[move.vertical.v - 1].stones[i] == move.stone) break
-                this.lines[move.vertical.v - 1].stones[i] = move.stone
+            for (i in horizontalCoordinate.value-2 downTo 0) {
+                if (this.lines[verticalCoordinate.value-1].stones[i] == move.stone) break
+                this.lines[verticalCoordinate.value-1].stones[i] = move.stone
             }
         }
     }
 
     private fun turnAtRight(move: Move) {
-        val targetStones = this.lines[move.vertical.v - 1].stones.subList(move.horizontal.v, 8)
+        val verticalCoordinate = move.point.verticalCoordinate
+        val horizontalCoordinate = move.point.horizontalCoordinate
+
+        val targetStones = this.lines[verticalCoordinate.value- 1].stones.subList(horizontalCoordinate.value, 8)
         if (targetStones.contains(move.stone)
             && !targetStones.subList(0, targetStones.indexOf(move.stone)).contains(Stone.NONE)) {
-            for (i in move.horizontal.v .. 7) {
-                if (this.lines[move.vertical.v - 1].stones[i] == move.stone) break
-                this.lines[move.vertical.v - 1].stones[i] = move.stone
+            for (i in horizontalCoordinate.value.. 7) {
+                if (this.lines[verticalCoordinate.value- 1].stones[i] == move.stone) break
+                this.lines[verticalCoordinate.value- 1].stones[i] = move.stone
             }
         }
     }
