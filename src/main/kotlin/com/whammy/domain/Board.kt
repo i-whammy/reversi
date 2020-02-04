@@ -11,45 +11,38 @@ class Board {
     }
 
     fun add(move: Move) : Board {
+        // TODO ひっくり返せる石が一つもなければ指し直しを要求する
         this.lines[move.point.verticalCoordinate.value - 1].stones[move.point.horizontalCoordinate.value - 1] = move.stone
-        val turnables = this.getTurnableDirections(move)
-        turnables.forEach {
+        val turnableDirections = this.getTurnableDirections(BoardStone(move.point, move.stone))
+        turnableDirections.forEach {
             when (it) {
-                // TODO 斜めの実装
                 Direction.Left -> turnAtLeft(move)
                 Direction.Right -> turnAtRight(move)
+                // TODO 縦の実装
                 Direction.Top -> turnAtTop(move)
                 Direction.Bottom -> turnAtBottom(move)
+                // TODO 斜めの実装
             }
         }
         return this
     }
 
-    fun getTurnableDirections(move: Move): List<Direction> {
+    fun getTurnableDirections(boardStone: BoardStone): List<Direction> {
         val directions = mutableListOf<Direction>()
-        val point = move.point
-        val stone = move.stone
-        if (!point.verticalCoordinate.isTopEdge() && !point.horizontalCoordinate.isLeftEdge() &&
-            this.getAt(Point(VerticalCoordinate(point.verticalCoordinate.value-1), HorizontalCoordinate(point.horizontalCoordinate.value-1))) == stone.opposite()) directions.add(Direction.TopLeft)
-        if (!point.verticalCoordinate.isTopEdge() &&
-            this.getAt(Point(VerticalCoordinate(point.verticalCoordinate.value-1), point.horizontalCoordinate)) == move.stone.opposite()) directions.add(Direction.Top)
-        if (!point.verticalCoordinate.isTopEdge() && !point.horizontalCoordinate.isRightEdge() &&
-            this.getAt(Point(VerticalCoordinate(point.verticalCoordinate.value-1), HorizontalCoordinate(point.horizontalCoordinate.value+1))) == stone.opposite()) directions.add(Direction.TopRight)
-        if (!point.horizontalCoordinate.isRightEdge() &&
-            this.getAt(Point(point.verticalCoordinate, HorizontalCoordinate(point.horizontalCoordinate.value+1))) == stone.opposite()) directions.add(Direction.Right)
-        if (!point.horizontalCoordinate.isRightEdge() && !point.verticalCoordinate.isBottomEdge() &&
-            this.getAt(Point(VerticalCoordinate(point.verticalCoordinate.value+1), HorizontalCoordinate(point.horizontalCoordinate.value+1))) == stone.opposite()) directions.add(Direction.BottomRight)
-        if (!point.verticalCoordinate.isBottomEdge() &&
-            this.getAt(Point(VerticalCoordinate(point.verticalCoordinate.value+1), point.horizontalCoordinate)) == stone.opposite()) directions.add(Direction.Bottom)
-        if (!point.verticalCoordinate.isBottomEdge() && !point.horizontalCoordinate.isLeftEdge() &&
-            this.getAt(Point(VerticalCoordinate(point.verticalCoordinate.value+1), HorizontalCoordinate(point.horizontalCoordinate.value-1))) == stone.opposite()) directions.add(Direction.BottomLeft)
-        if (!point.horizontalCoordinate.isLeftEdge() &&
-            this.getAt(Point(point.verticalCoordinate, HorizontalCoordinate(point.horizontalCoordinate.value-1))) == stone.opposite()) directions.add(Direction.Left)
+        Direction.values().forEach { direction ->
+            val targetBoardStones = getBoardStones(boardStone.point, direction)
+            if (targetBoardStones.stones.isNotEmpty() && targetBoardStones.canTurnStonesOver(boardStone)) directions.add(direction)
+        }
         return directions
     }
 
     fun getAt(point: Point): Stone {
         return this.lines[point.verticalCoordinate.value-1].stones[point.horizontalCoordinate.value-1]
+    }
+
+    fun getAt(point: Point, direction: Direction): BoardStone  {
+        val targetPoint = point.getAdjacentAt(direction)
+        return BoardStone(targetPoint, this.getAt(targetPoint))
     }
 
     private fun turnAtLeft(move: Move) {
@@ -88,6 +81,15 @@ class Board {
         //TODO
     }
 
+    fun getBoardStones(fromPoint: Point, toDirection: Direction): TargetBoardStones {
+        val stones = mutableListOf<BoardStone>()
+        var currentPoint = fromPoint
+        while (!currentPoint.isEdge()) {
+            stones.add(getAt(currentPoint, toDirection))
+            currentPoint = currentPoint.getAdjacentAt(toDirection)
+        }
+        return TargetBoardStones(stones)
+    }
 }
 
 class Line {
