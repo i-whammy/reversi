@@ -14,14 +14,12 @@ class Board {
         // TODO ひっくり返せる石が一つもなければ指し直しを要求する
         this.lines[move.point.verticalCoordinate.value - 1].stones[move.point.horizontalCoordinate.value - 1] = move.stone
         val turnableDirections = this.getTurnableDirections(BoardStone(move.point, move.stone))
-        turnableDirections.forEach {
-            when (it) {
-                Direction.Left -> turnAtLeft(move)
-                Direction.Right -> turnAtRight(move)
-                // TODO 縦の実装
-                Direction.Top -> turnAtTop(move)
-                Direction.Bottom -> turnAtBottom(move)
-                // TODO 斜めの実装
+        turnableDirections.forEach {direction ->
+            val targetBoardStones = getBoardStones(move.point, direction).getTurnoverTargetStones(
+                BoardStone(move.point, move.stone)
+            )
+            targetBoardStones.stones.forEach {
+                this.lines[it.point.verticalCoordinate.value-1].stones[it.point.horizontalCoordinate.value-1] = move.stone
             }
         }
         return this
@@ -43,42 +41,6 @@ class Board {
     fun getAt(point: Point, direction: Direction): BoardStone  {
         val targetPoint = point.getAdjacentAt(direction)
         return BoardStone(targetPoint, this.getAt(targetPoint))
-    }
-
-    private fun turnAtLeft(move: Move) {
-        val verticalCoordinate = move.point.verticalCoordinate
-        val horizontalCoordinate = move.point.horizontalCoordinate
-
-        val targetStones = this.lines[verticalCoordinate.value-1].stones.subList(0, horizontalCoordinate.value-1)
-        if (targetStones.contains(move.stone)
-            && !targetStones.subList(targetStones.lastIndexOf(move.stone), targetStones.size).contains(Stone.NONE)) {
-            for (i in horizontalCoordinate.value-2 downTo 0) {
-                if (this.lines[verticalCoordinate.value-1].stones[i] == move.stone) break
-                this.lines[verticalCoordinate.value-1].stones[i] = move.stone
-            }
-        }
-    }
-
-    private fun turnAtRight(move: Move) {
-        val verticalCoordinate = move.point.verticalCoordinate
-        val horizontalCoordinate = move.point.horizontalCoordinate
-
-        val targetStones = this.lines[verticalCoordinate.value- 1].stones.subList(horizontalCoordinate.value, 8)
-        if (targetStones.contains(move.stone)
-            && !targetStones.subList(0, targetStones.indexOf(move.stone)).contains(Stone.NONE)) {
-            for (i in horizontalCoordinate.value.. 7) {
-                if (this.lines[verticalCoordinate.value- 1].stones[i] == move.stone) break
-                this.lines[verticalCoordinate.value- 1].stones[i] = move.stone
-            }
-        }
-    }
-
-    private fun turnAtTop(move: Move) {
-        //TODO
-    }
-
-    private fun turnAtBottom(move: Move) {
-        //TODO
     }
 
     fun getBoardStones(fromPoint: Point, toDirection: Direction): TargetBoardStones {
