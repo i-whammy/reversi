@@ -2,6 +2,7 @@ package com.whammy.domain
 
 import org.junit.Ignore
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
 import kotlin.test.assertEquals
 
 class BoardTest {
@@ -12,6 +13,12 @@ class BoardTest {
         val expected = board.add(Move(Point(VerticalCoordinate(5), HorizontalCoordinate(6)), Stone.BLACK))
         assertEquals(Stone.BLACK, expected.getAt(Point(VerticalCoordinate(5), HorizontalCoordinate(5))))
         assertEquals(Stone.BLACK, expected.getAt(Point(VerticalCoordinate(5), HorizontalCoordinate(6))))
+    }
+
+    @Test
+    fun testThrowsNoTurnableStoneExceptionWhenAdd() {
+        val board = Board()
+        assertThrows<NoTurnableStoneException> { board.add(Move(Point.at(5,6), Stone.WHITE)) }
     }
 
     @Ignore

@@ -1,5 +1,7 @@
 package com.whammy.domain
 
+import java.lang.Exception
+
 class Board {
     val lines: MutableList<Line> = MutableList(8) { Line() }
 
@@ -11,9 +13,9 @@ class Board {
     }
 
     fun add(move: Move) : Board {
-        // TODO ひっくり返せる石が一つもなければ指し直しを要求する
-        this.lines[move.point.verticalCoordinate.value - 1].stones[move.point.horizontalCoordinate.value - 1] = move.stone
         val turnableDirections = this.getTurnableDirections(BoardStone(move.point, move.stone))
+        if (turnableDirections.isEmpty()) throw NoTurnableStoneException("No turnable stones found.")
+        this.lines[move.point.verticalCoordinate.value - 1].stones[move.point.horizontalCoordinate.value - 1] = move.stone
         turnableDirections.forEach {direction ->
             val targetBoardStones = getBoardStones(move.point, direction).getTurnoverTargetStones(
                 BoardStone(move.point, move.stone)
@@ -68,3 +70,5 @@ enum class Stone {
         }
     }
 }
+
+class NoTurnableStoneException(override val message: String) : Exception()

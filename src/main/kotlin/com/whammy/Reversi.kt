@@ -41,6 +41,9 @@ private fun handleMove(board: Board) {
     } catch (e: OutOfRangeException) {
         println(e.message)
         handleMove(board)
+    } catch (e: NoTurnableStoneException) {
+        println(e.message)
+        handleMove(board)
     }
 }
 
