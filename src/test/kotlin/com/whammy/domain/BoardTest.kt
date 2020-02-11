@@ -11,8 +11,8 @@ class BoardTest {
     fun testAdd() {
         val board = Board()
         val expected = board.add(Move(Point(VerticalCoordinate(5), HorizontalCoordinate(6)), Stone.BLACK))
-        assertEquals(Stone.BLACK, expected.getAt(Point(VerticalCoordinate(5), HorizontalCoordinate(5))))
-        assertEquals(Stone.BLACK, expected.getAt(Point(VerticalCoordinate(5), HorizontalCoordinate(6))))
+        assertEquals(Stone.BLACK, expected.getStoneAt(Point(VerticalCoordinate(5), HorizontalCoordinate(5))))
+        assertEquals(Stone.BLACK, expected.getStoneAt(Point(VerticalCoordinate(5), HorizontalCoordinate(6))))
     }
 
     @Test
@@ -28,8 +28,8 @@ class BoardTest {
         board.add(Move(Point(VerticalCoordinate(5), HorizontalCoordinate(6)), Stone.BLACK))
         board.add(Move(Point(VerticalCoordinate(4), HorizontalCoordinate(6)), Stone.WHITE))
         val expected = board.add(Move(Point(VerticalCoordinate(3), HorizontalCoordinate(6)), Stone.BLACK))
-        assertEquals(Stone.BLACK, expected.getAt(Point(VerticalCoordinate(4), HorizontalCoordinate(5))))
-        assertEquals(Stone.BLACK, expected.getAt(Point(VerticalCoordinate(4), HorizontalCoordinate(6))))
+        assertEquals(Stone.BLACK, expected.getStoneAt(Point(VerticalCoordinate(4), HorizontalCoordinate(5))))
+        assertEquals(Stone.BLACK, expected.getStoneAt(Point(VerticalCoordinate(4), HorizontalCoordinate(6))))
     }
 
     @Test
@@ -58,23 +58,23 @@ class BoardTest {
         val board = Board()
         val black = Stone.BLACK
         val white = Stone.WHITE
-        assertEquals(white,board.getAt(Point(VerticalCoordinate(4), HorizontalCoordinate(4))))
-        assertEquals(black,board.getAt(Point(VerticalCoordinate(4), HorizontalCoordinate(5))))
-        assertEquals(black,board.getAt(Point(VerticalCoordinate(5), HorizontalCoordinate(4))))
-        assertEquals(white,board.getAt(Point(VerticalCoordinate(5), HorizontalCoordinate(5))))
+        assertEquals(white,board.getStoneAt(Point(VerticalCoordinate(4), HorizontalCoordinate(4))))
+        assertEquals(black,board.getStoneAt(Point(VerticalCoordinate(4), HorizontalCoordinate(5))))
+        assertEquals(black,board.getStoneAt(Point(VerticalCoordinate(5), HorizontalCoordinate(4))))
+        assertEquals(white,board.getStoneAt(Point(VerticalCoordinate(5), HorizontalCoordinate(5))))
     }
 
     @Test
     fun testGetAtWithDirection() {
         val board = Board()
-        assertEquals(BoardStone(Point.at(3,3), Stone.NONE),board.getAt(Point.at(4,4), Direction.TopLeft))
-        assertEquals(BoardStone(Point.at(3,4), Stone.NONE),board.getAt(Point.at(4,4), Direction.Top))
-        assertEquals(BoardStone(Point.at(3,5), Stone.NONE),board.getAt(Point.at(4,4), Direction.TopRight))
-        assertEquals(BoardStone(Point.at(4,5), Stone.BLACK),board.getAt(Point.at(4,4), Direction.Right))
-        assertEquals(BoardStone(Point.at(5,5), Stone.WHITE),board.getAt(Point.at(4,4), Direction.BottomRight))
-        assertEquals(BoardStone(Point.at(5,4), Stone.BLACK),board.getAt(Point.at(4,4), Direction.Bottom))
-        assertEquals(BoardStone(Point.at(5,3), Stone.NONE),board.getAt(Point.at(4,4), Direction.BottomLeft))
-        assertEquals(BoardStone(Point.at(4,3), Stone.NONE),board.getAt(Point.at(4,4), Direction.Left))
+        assertEquals(BoardStone(Point.at(3,3), Stone.NONE),board.getStoneAt(Point.at(4,4), Direction.TopLeft))
+        assertEquals(BoardStone(Point.at(3,4), Stone.NONE),board.getStoneAt(Point.at(4,4), Direction.Top))
+        assertEquals(BoardStone(Point.at(3,5), Stone.NONE),board.getStoneAt(Point.at(4,4), Direction.TopRight))
+        assertEquals(BoardStone(Point.at(4,5), Stone.BLACK),board.getStoneAt(Point.at(4,4), Direction.Right))
+        assertEquals(BoardStone(Point.at(5,5), Stone.WHITE),board.getStoneAt(Point.at(4,4), Direction.BottomRight))
+        assertEquals(BoardStone(Point.at(5,4), Stone.BLACK),board.getStoneAt(Point.at(4,4), Direction.Bottom))
+        assertEquals(BoardStone(Point.at(5,3), Stone.NONE),board.getStoneAt(Point.at(4,4), Direction.BottomLeft))
+        assertEquals(BoardStone(Point.at(4,3), Stone.NONE),board.getStoneAt(Point.at(4,4), Direction.Left))
     }
 
     @Test

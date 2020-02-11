@@ -17,9 +17,7 @@ class Board {
         if (turnableDirections.isEmpty()) throw NoTurnableStoneException("No turnable stones found.")
         this.lines[move.point.verticalCoordinate.value - 1].stones[move.point.horizontalCoordinate.value - 1] = move.stone
         turnableDirections.forEach {direction ->
-            val targetBoardStones = getBoardStones(move.point, direction).getTurnoverTargetStones(
-                BoardStone(move.point, move.stone)
-            )
+            val targetBoardStones = getBoardStones(move.point, direction).getTurnoverTargetStones(BoardStone(move.point, move.stone))
             targetBoardStones.stones.forEach {
                 this.lines[it.point.verticalCoordinate.value-1].stones[it.point.horizontalCoordinate.value-1] = move.stone
             }
@@ -36,20 +34,20 @@ class Board {
         return directions
     }
 
-    fun getAt(point: Point): Stone {
+    fun getStoneAt(point: Point): Stone {
         return this.lines[point.verticalCoordinate.value-1].stones[point.horizontalCoordinate.value-1]
     }
 
-    fun getAt(point: Point, direction: Direction): BoardStone  {
+    fun getStoneAt(point: Point, direction: Direction): BoardStone  {
         val targetPoint = point.getAdjacentAt(direction)
-        return BoardStone(targetPoint, this.getAt(targetPoint))
+        return BoardStone(targetPoint, this.getStoneAt(targetPoint))
     }
 
     fun getBoardStones(fromPoint: Point, toDirection: Direction): TargetBoardStones {
         val stones = mutableListOf<BoardStone>()
         var currentPoint = fromPoint
         while (!currentPoint.isEdge()) {
-            stones.add(getAt(currentPoint, toDirection))
+            stones.add(getStoneAt(currentPoint, toDirection))
             currentPoint = currentPoint.getAdjacentAt(toDirection)
         }
         return TargetBoardStones(stones)

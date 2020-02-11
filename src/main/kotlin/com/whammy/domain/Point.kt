@@ -12,14 +12,14 @@ data class Point(val verticalCoordinate: VerticalCoordinate, val horizontalCoord
 
     fun getAdjacentAt(direction: Direction): Point {
         return when (direction) {
-            Direction.TopLeft -> Point.at(verticalCoordinate.value-1,horizontalCoordinate.value-1)
-            Direction.Top -> Point.at(verticalCoordinate.value-1,horizontalCoordinate.value)
-            Direction.TopRight -> Point.at(verticalCoordinate.value-1,horizontalCoordinate.value+1)
-            Direction.Right -> Point.at(verticalCoordinate.value,horizontalCoordinate.value+1)
-            Direction.BottomRight -> Point.at(verticalCoordinate.value+1,horizontalCoordinate.value+1)
-            Direction.Bottom -> Point.at(verticalCoordinate.value+1,horizontalCoordinate.value)
-            Direction.BottomLeft -> Point.at(verticalCoordinate.value+1,horizontalCoordinate.value-1)
-            Direction.Left -> Point.at(verticalCoordinate.value,horizontalCoordinate.value-1)
+            Direction.TopLeft -> at(verticalCoordinate.value-1,horizontalCoordinate.value-1)
+            Direction.Top -> at(verticalCoordinate.value-1,horizontalCoordinate.value)
+            Direction.TopRight -> at(verticalCoordinate.value-1,horizontalCoordinate.value+1)
+            Direction.Right -> at(verticalCoordinate.value,horizontalCoordinate.value+1)
+            Direction.BottomRight -> at(verticalCoordinate.value+1,horizontalCoordinate.value+1)
+            Direction.Bottom -> at(verticalCoordinate.value+1,horizontalCoordinate.value)
+            Direction.BottomLeft -> at(verticalCoordinate.value+1,horizontalCoordinate.value-1)
+            Direction.Left -> at(verticalCoordinate.value,horizontalCoordinate.value-1)
         }
     }
 }
