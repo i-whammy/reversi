@@ -4,6 +4,7 @@ import org.junit.Ignore
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import kotlin.test.assertEquals
+import kotlin.test.assertTrue
 
 class BoardTest {
 
@@ -110,5 +111,16 @@ class BoardTest {
             Point.at(6,5)
         )
         assertEquals(validBlackPoints, board.getValidPoints(Stone.BLACK))
+    }
+
+    @Test
+    fun testIsGameEnded() {
+        val board = Board()
+        board.lines.forEachIndexed { verticalIndex, line ->
+            line.stones.forEachIndexed { horizontalIndex, _ ->
+                board.lines[verticalIndex].stones[horizontalIndex] = Stone.WHITE
+            }
+        }
+        assertTrue { board.isGameEnded() }
     }
 }

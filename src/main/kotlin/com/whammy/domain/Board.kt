@@ -60,6 +60,12 @@ class Board {
                 .map { it.point }
         }.flatten()
     }
+
+    fun isGameEnded(): Boolean {
+        return !this.lines.any {
+            it.stones.any { stone -> stone == Stone.NONE }
+        }
+    }
 }
 
 class Line {
