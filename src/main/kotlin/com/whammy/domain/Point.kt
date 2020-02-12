@@ -10,6 +10,15 @@ data class Point(val verticalCoordinate: VerticalCoordinate, val horizontalCoord
     fun isEdge() = verticalCoordinate.isTopEdge() || verticalCoordinate.isBottomEdge()
             || horizontalCoordinate.isLeftEdge() || horizontalCoordinate.isRightEdge()
 
+    fun isEdgeOf(direction: Direction): Boolean {
+        try {
+            getAdjacentAt(direction)
+        } catch (e: OutOfRangeException) {
+            return true
+        }
+        return false
+    }
+
     fun getAdjacentAt(direction: Direction): Point {
         return when (direction) {
             Direction.TopLeft -> at(verticalCoordinate.value-1,horizontalCoordinate.value-1)

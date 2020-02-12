@@ -46,7 +46,7 @@ class Board {
     fun getBoardStones(fromPoint: Point, toDirection: Direction): TargetBoardStones {
         val stones = mutableListOf<BoardStone>()
         var currentPoint = fromPoint
-        while (!currentPoint.isEdge()) {
+        while (!currentPoint.isEdgeOf(toDirection)) {
             stones.add(getStoneAt(currentPoint, toDirection))
             currentPoint = currentPoint.getAdjacentAt(toDirection)
         }
@@ -55,8 +55,10 @@ class Board {
 
     fun getValidPoints(stone: Stone): List<Point> {
         return this.lines.mapIndexed { verticalIndex, line ->
-            line.stones.mapIndexed { horizontalIndex, _ -> BoardStone(Point.at(verticalIndex + 1, horizontalIndex + 1), stone) }
+            line.stones.mapIndexed { horizontalIndex, _ ->
+                BoardStone(Point.at(verticalIndex + 1, horizontalIndex + 1), stone) }
                 .filter { getTurnableDirections(it).isNotEmpty() }
+                .filter { this.getStoneAt(it.point) == Stone.NONE }
                 .map { it.point }
         }.flatten()
     }

@@ -50,6 +50,28 @@ class BoardTest {
     }
 
     @Test
+    fun testGetTurnableDirectionsInParticularCase() {
+        val board = Board()
+        board.add(Move(Point(VerticalCoordinate(4), HorizontalCoordinate(3)), Stone.BLACK))
+        board.add(Move(Point(VerticalCoordinate(3), HorizontalCoordinate(3)), Stone.WHITE))
+        board.add(Move(Point(VerticalCoordinate(2), HorizontalCoordinate(3)), Stone.BLACK))
+        board.add(Move(Point(VerticalCoordinate(2), HorizontalCoordinate(2)), Stone.WHITE))
+        val expected = listOf(Direction.Right)
+        assertEquals(expected, board.getTurnableDirections(BoardStone(Point(VerticalCoordinate(2),HorizontalCoordinate(1)),Stone.BLACK)))
+    }
+
+    @Test
+    fun testGetTurnableDirectionsInParticularCase2() {
+        val board = Board()
+        board.add(Move(Point(VerticalCoordinate(6), HorizontalCoordinate(5)), Stone.BLACK))
+        board.add(Move(Point(VerticalCoordinate(4), HorizontalCoordinate(6)), Stone.WHITE))
+        board.add(Move(Point(VerticalCoordinate(3), HorizontalCoordinate(4)), Stone.BLACK))
+        board.add(Move(Point(VerticalCoordinate(2), HorizontalCoordinate(3)), Stone.WHITE))
+        board.add(Move(Point(VerticalCoordinate(2), HorizontalCoordinate(4)), Stone.BLACK))
+        assertTrue { !board.getValidPoints(Stone.WHITE).contains(Point.at(3,4))}
+    }
+
+    @Test
     fun testGetEmptyTurnableDirections() {
         assertEquals(emptyList(), Board().getTurnableDirections(BoardStone(Point(VerticalCoordinate(1), HorizontalCoordinate(1)),Stone.BLACK)))
     }
@@ -99,6 +121,20 @@ class BoardTest {
             BoardStone(Point(VerticalCoordinate(3), HorizontalCoordinate(7)), Stone.NONE),
             BoardStone(Point(VerticalCoordinate(2), HorizontalCoordinate(8)), Stone.NONE)))
         assertEquals(stones,board.getBoardStones(Point.at(6,4), Direction.TopRight))
+    }
+
+    @Test
+    fun testGetBoardStonesFromLeftEdgeToRight() {
+        val board = Board()
+        val stones = TargetBoardStones(listOf(
+            BoardStone(Point(VerticalCoordinate(1), HorizontalCoordinate(2)), Stone.NONE),
+            BoardStone(Point(VerticalCoordinate(1), HorizontalCoordinate(3)), Stone.NONE),
+            BoardStone(Point(VerticalCoordinate(1), HorizontalCoordinate(4)), Stone.NONE),
+            BoardStone(Point(VerticalCoordinate(1), HorizontalCoordinate(5)), Stone.NONE),
+            BoardStone(Point(VerticalCoordinate(1), HorizontalCoordinate(6)), Stone.NONE),
+            BoardStone(Point(VerticalCoordinate(1), HorizontalCoordinate(7)), Stone.NONE),
+            BoardStone(Point(VerticalCoordinate(1), HorizontalCoordinate(8)), Stone.NONE)))
+        assertEquals(stones,board.getBoardStones(Point.at(1,1), Direction.Right))
     }
 
     @Test
