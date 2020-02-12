@@ -52,6 +52,14 @@ class Board {
         }
         return TargetBoardStones(stones)
     }
+
+    fun getValidPoints(stone: Stone): List<Point> {
+        return this.lines.mapIndexed { verticalIndex, line ->
+            line.stones.mapIndexed { horizontalIndex, _ -> BoardStone(Point.at(verticalIndex + 1, horizontalIndex + 1), stone) }
+                .filter { getTurnableDirections(it).isNotEmpty() }
+                .map { it.point }
+        }.flatten()
+    }
 }
 
 class Line {

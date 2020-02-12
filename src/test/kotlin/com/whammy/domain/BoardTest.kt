@@ -99,4 +99,16 @@ class BoardTest {
             BoardStone(Point(VerticalCoordinate(2), HorizontalCoordinate(8)), Stone.NONE)))
         assertEquals(stones,board.getBoardStones(Point.at(6,4), Direction.TopRight))
     }
+
+    @Test
+    fun testGetValidPoints() {
+        val board = Board()
+        val validBlackPoints = listOf(
+            Point.at(3,4),
+            Point.at(4,3),
+            Point.at(5,6),
+            Point.at(6,5)
+        )
+        assertEquals(validBlackPoints, board.getValidPoints(Stone.BLACK))
+    }
 }

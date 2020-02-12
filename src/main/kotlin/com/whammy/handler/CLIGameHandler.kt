@@ -9,7 +9,7 @@ class CLIGameHandler() : GameHandler {
         return Board()
     }
 
-    override fun handleMoves(board: Board) {
+    override fun handleGame(board: Board) {
         println("Your turn.")
         println("Input number like 3 5.")
         try {
@@ -20,13 +20,13 @@ class CLIGameHandler() : GameHandler {
             exitProcess(0)
         } catch (e: OutOfRangeException) {
             println(e.message)
-            handleMoves(board)
+            handleGame(board)
         } catch (e: NoTurnableStoneException) {
             println(e.message)
-            handleMoves(board)
+            handleGame(board)
         } catch (e: Exception) {
             println("Invalid input. Input number like 3 5.")
-            handleMoves(board)
+            handleGame(board)
         }
     }
 }

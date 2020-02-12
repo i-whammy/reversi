@@ -5,5 +5,5 @@ import com.whammy.handler.CLIGameHandler
 fun main(args: Array<String>) {
     val handler = CLIGameHandler()
     val board = handler.init()
-    handler.handleMoves(board)
+    handler.handleGame(board)
 }
