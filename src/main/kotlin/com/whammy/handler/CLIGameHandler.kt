@@ -21,7 +21,7 @@ class CLIGameHandler() : GameHandler {
                 println("Skip CPU turn because CPU cannot put any stone.")
             }
         }
-        // TODO result
+        println(if (board.count(Stone.BLACK) > board.count(Stone.WHITE)) "You win!!" else "You lose")
         println("Game ended.")
     }
 
@@ -33,7 +33,6 @@ class CLIGameHandler() : GameHandler {
             val (v, h) = readLine()!!.split(" ").map { it.toInt() }
             val move = Move(Point(VerticalCoordinate(v), HorizontalCoordinate(h)), Stone.BLACK)
             board.add(move).printBoard()
-            println("Accepted. Vertical : $v, horizontal : $h")
         } catch (e: OutOfRangeException) {
             println(e.message)
             handleUserInput(board)
@@ -51,11 +50,6 @@ class CLIGameHandler() : GameHandler {
         board.add(Move(Point(verticalCoordinate, horizontalCoordinate), Stone.WHITE))
     }
 }
-
-// handleGame
-// 先攻：プレイヤー
-// 後攻：CPU
-// userInput -> CPUInput
 
 private fun Board.printBoard() {
     this.lines.map {

@@ -68,6 +68,12 @@ class Board {
             it.stones.any { stone -> stone == Stone.NONE }
         }
     }
+
+    fun count(stone: Stone): Int {
+        return this.lines.map { line ->
+            line.stones.count { it == Stone.BLACK }
+        }.reduce { acc, i -> acc + i }
+    }
 }
 
 class Line {

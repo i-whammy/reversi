@@ -159,4 +159,10 @@ class BoardTest {
         }
         assertTrue { board.isGameEnded() }
     }
+
+    @Test
+    fun testCount() {
+        val board = Board()
+        assertEquals(2, board.count(Stone.BLACK))
+    }
 }
