@@ -5,7 +5,8 @@ import com.whammy.domain.*
 class CLIGameHandler() : GameHandler {
     override fun init(): Board {
         println("Hello, reversi!")
-        return Board()
+        val state = BoardState()
+        return Board(state)
     }
 
     override fun handleGame(board: Board) {
@@ -52,10 +53,10 @@ class CLIGameHandler() : GameHandler {
 }
 
 private fun Board.printBoard() {
-    this.lines.map {
+    this.getAllStonesPerLines().map {
         var str = "|"
-        it.stones.map {stone ->
-            str += when (stone) {
+        it.map {boardStone ->
+            str += when (boardStone.stone) {
                 Stone.BLACK -> "x"
                 Stone.WHITE -> "o"
                 else -> "-"

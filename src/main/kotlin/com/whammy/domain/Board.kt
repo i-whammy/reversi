@@ -2,24 +2,16 @@ package com.whammy.domain
 
 import java.lang.Exception
 
-class Board {
-    val lines: MutableList<Line> = MutableList(8) { Line() }
-
-    init {
-        lines[3].stones[3] = Stone.WHITE
-        lines[3].stones[4] = Stone.BLACK
-        lines[4].stones[3] = Stone.BLACK
-        lines[4].stones[4] = Stone.WHITE
-    }
+class Board(private val state: State) {
 
     fun add(move: Move) : Board {
         val turnableDirections = this.getTurnableDirections(BoardStone(move.point, move.stone))
         if (turnableDirections.isEmpty()) throw NoTurnableStoneException("No turnable stones found.")
-        this.lines[move.point.vertical.value - 1].stones[move.point.horizontal.value - 1] = move.stone
+        state.update(move.point, move.stone)
         turnableDirections.forEach {direction ->
             val targetBoardStones = getBoardStones(move.point, direction).getTurnoverTargetStones(BoardStone(move.point, move.stone))
             targetBoardStones.stones.forEach {
-                this.lines[it.point.vertical.value-1].stones[it.point.horizontal.value-1] = move.stone
+                state.update(it.point, move.stone)
             }
         }
         return this
@@ -34,11 +26,9 @@ class Board {
         return directions
     }
 
-    fun getStoneAt(point: Point): Stone {
-        return this.lines[point.vertical.value-1].stones[point.horizontal.value-1]
-    }
+    fun getStoneAt(point: Point) = state.getAt(point)
 
-    fun getStoneAt(point: Point, direction: Direction): BoardStone  {
+    fun getAdjacentStoneAt(point: Point, direction: Direction): BoardStone  {
         val targetPoint = point.getAdjacentAt(direction)
         return BoardStone(targetPoint, this.getStoneAt(targetPoint))
     }
@@ -47,33 +37,29 @@ class Board {
         val stones = mutableListOf<BoardStone>()
         var currentPoint = fromPoint
         while (!currentPoint.isEdgeOf(toDirection)) {
-            stones.add(getStoneAt(currentPoint, toDirection))
+            stones.add(getAdjacentStoneAt(currentPoint, toDirection))
             currentPoint = currentPoint.getAdjacentAt(toDirection)
         }
         return TargetBoardStones(stones)
     }
 
     fun getValidPoints(stone: Stone): List<Point> {
-        return this.lines.mapIndexed { verticalIndex, line ->
-            line.stones.mapIndexed { horizontalIndex, _ ->
-                BoardStone(Point.at(verticalIndex + 1, horizontalIndex + 1), stone) }
-                .filter { getTurnableDirections(it).isNotEmpty() }
-                .filter { this.getStoneAt(it.point) == Stone.NONE }
-                .map { it.point }
-        }.flatten()
+        return state.getAllStones()
+            .map { BoardStone(it.point, stone) }
+            .filter { getTurnableDirections(it).isNotEmpty() }
+            .filter { this.getStoneAt(it.point) == Stone.NONE }
+            .map { it.point }
     }
 
     fun isGameEnded(): Boolean {
-        return !this.lines.any {
-            it.stones.any { stone -> stone == Stone.NONE }
-        }
+        return state.getAllStones().none { it.stone == Stone.NONE }
     }
 
     fun count(stone: Stone): Int {
-        return this.lines.map { line ->
-            line.stones.count { it == stone }
-        }.reduce { acc, i -> acc + i }
+        return state.getAllStones().count { it.stone == stone }
     }
+
+    fun getAllStonesPerLines(): List<List<BoardStone>> = state.getAllStonesPerLines()
 }
 
 class Line {
