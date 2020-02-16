@@ -110,7 +110,7 @@ class BoardTest {
             BoardStone(Point(Vertical(4), Horizontal(3)), Stone.NONE),
             BoardStone(Point(Vertical(4), Horizontal(2)), Stone.NONE),
             BoardStone(Point(Vertical(4), Horizontal(1)), Stone.NONE)))
-        assertEquals(stones,board.getBoardStones(Point.at(4,6), Direction.Left))
+        assertEquals(stones,board.getBoardStonesUntilEdge(Point.at(4,6), Direction.Left))
     }
 
     @Test
@@ -121,7 +121,7 @@ class BoardTest {
             BoardStone(Point(Vertical(4), Horizontal(6)), Stone.NONE),
             BoardStone(Point(Vertical(3), Horizontal(7)), Stone.NONE),
             BoardStone(Point(Vertical(2), Horizontal(8)), Stone.NONE)))
-        assertEquals(stones,board.getBoardStones(Point.at(6,4), Direction.TopRight))
+        assertEquals(stones,board.getBoardStonesUntilEdge(Point.at(6,4), Direction.TopRight))
     }
 
     @Test
@@ -135,7 +135,7 @@ class BoardTest {
             BoardStone(Point(Vertical(1), Horizontal(6)), Stone.NONE),
             BoardStone(Point(Vertical(1), Horizontal(7)), Stone.NONE),
             BoardStone(Point(Vertical(1), Horizontal(8)), Stone.NONE)))
-        assertEquals(stones,board.getBoardStones(Point.at(1,1), Direction.Right))
+        assertEquals(stones,board.getBoardStonesUntilEdge(Point.at(1,1), Direction.Right))
     }
 
     @Test

@@ -9,7 +9,7 @@ class Board(private val state: State) {
         if (turnableDirections.isEmpty()) throw NoTurnableStoneException("No turnable stones found.")
         state.update(move.point, move.stone)
         turnableDirections.forEach {direction ->
-            val targetBoardStones = getBoardStones(move.point, direction).getTurnoverTargetStones(BoardStone(move.point, move.stone))
+            val targetBoardStones = getBoardStonesUntilEdge(move.point, direction).getTurnoverTargetStones(BoardStone(move.point, move.stone))
             targetBoardStones.stones.forEach {
                 state.update(it.point, move.stone)
             }
@@ -20,7 +20,7 @@ class Board(private val state: State) {
     fun getTurnableDirections(boardStone: BoardStone): List<Direction> {
         val directions = mutableListOf<Direction>()
         Direction.values().forEach { direction ->
-            val targetBoardStones = getBoardStones(boardStone.point, direction)
+            val targetBoardStones = getBoardStonesUntilEdge(boardStone.point, direction)
             if (targetBoardStones.stones.isNotEmpty() && targetBoardStones.canTurnStonesOver(boardStone)) directions.add(direction)
         }
         return directions
@@ -33,7 +33,7 @@ class Board(private val state: State) {
         return BoardStone(targetPoint, this.getStoneAt(targetPoint))
     }
 
-    fun getBoardStones(fromPoint: Point, toDirection: Direction): TargetBoardStones {
+    fun getBoardStonesUntilEdge(fromPoint: Point, toDirection: Direction): TargetBoardStones {
         val stones = mutableListOf<BoardStone>()
         var currentPoint = fromPoint
         while (!currentPoint.isEdgeOf(toDirection)) {
