@@ -11,9 +11,9 @@ class BoardTest {
     @Test
     fun testAdd() {
         val board = Board()
-        val expected = board.add(Move(Point(VerticalCoordinate(5), HorizontalCoordinate(6)), Stone.BLACK))
-        assertEquals(Stone.BLACK, expected.getStoneAt(Point(VerticalCoordinate(5), HorizontalCoordinate(5))))
-        assertEquals(Stone.BLACK, expected.getStoneAt(Point(VerticalCoordinate(5), HorizontalCoordinate(6))))
+        val expected = board.add(Move(Point(Vertical(5), Horizontal(6)), Stone.BLACK))
+        assertEquals(Stone.BLACK, expected.getStoneAt(Point(Vertical(5), Horizontal(5))))
+        assertEquals(Stone.BLACK, expected.getStoneAt(Point(Vertical(5), Horizontal(6))))
     }
 
     @Test
@@ -26,54 +26,54 @@ class BoardTest {
     @Test
     fun testAddWithSeveralStonesTurning() {
         val board = Board()
-        board.add(Move(Point(VerticalCoordinate(5), HorizontalCoordinate(6)), Stone.BLACK))
-        board.add(Move(Point(VerticalCoordinate(4), HorizontalCoordinate(6)), Stone.WHITE))
-        val expected = board.add(Move(Point(VerticalCoordinate(3), HorizontalCoordinate(6)), Stone.BLACK))
-        assertEquals(Stone.BLACK, expected.getStoneAt(Point(VerticalCoordinate(4), HorizontalCoordinate(5))))
-        assertEquals(Stone.BLACK, expected.getStoneAt(Point(VerticalCoordinate(4), HorizontalCoordinate(6))))
+        board.add(Move(Point(Vertical(5), Horizontal(6)), Stone.BLACK))
+        board.add(Move(Point(Vertical(4), Horizontal(6)), Stone.WHITE))
+        val expected = board.add(Move(Point(Vertical(3), Horizontal(6)), Stone.BLACK))
+        assertEquals(Stone.BLACK, expected.getStoneAt(Point(Vertical(4), Horizontal(5))))
+        assertEquals(Stone.BLACK, expected.getStoneAt(Point(Vertical(4), Horizontal(6))))
     }
 
     @Test
     fun testGetTurnableDirections() {
         val board = Board()
         val expected = listOf(Direction.Left)
-        assertEquals(expected, board.getTurnableDirections(BoardStone(Point(VerticalCoordinate(5), HorizontalCoordinate(6)), Stone.BLACK)))
+        assertEquals(expected, board.getTurnableDirections(BoardStone(Point(Vertical(5), Horizontal(6)), Stone.BLACK)))
     }
 
     @Test
     fun testGetSeveralTurnableDirections() {
         val board = Board()
-        board.add(Move(Point(VerticalCoordinate(5), HorizontalCoordinate(6)), Stone.BLACK))
-        board.add(Move(Point(VerticalCoordinate(4), HorizontalCoordinate(6)), Stone.WHITE))
+        board.add(Move(Point(Vertical(5), Horizontal(6)), Stone.BLACK))
+        board.add(Move(Point(Vertical(4), Horizontal(6)), Stone.WHITE))
         val expected = listOf(Direction.Bottom, Direction.BottomLeft)
-        assertEquals(expected, board.getTurnableDirections(BoardStone(Point(VerticalCoordinate(3),HorizontalCoordinate(6)),Stone.BLACK)))
+        assertEquals(expected, board.getTurnableDirections(BoardStone(Point(Vertical(3),Horizontal(6)),Stone.BLACK)))
     }
 
     @Test
     fun testGetTurnableDirectionsInParticularCase() {
         val board = Board()
-        board.add(Move(Point(VerticalCoordinate(4), HorizontalCoordinate(3)), Stone.BLACK))
-        board.add(Move(Point(VerticalCoordinate(3), HorizontalCoordinate(3)), Stone.WHITE))
-        board.add(Move(Point(VerticalCoordinate(2), HorizontalCoordinate(3)), Stone.BLACK))
-        board.add(Move(Point(VerticalCoordinate(2), HorizontalCoordinate(2)), Stone.WHITE))
+        board.add(Move(Point(Vertical(4), Horizontal(3)), Stone.BLACK))
+        board.add(Move(Point(Vertical(3), Horizontal(3)), Stone.WHITE))
+        board.add(Move(Point(Vertical(2), Horizontal(3)), Stone.BLACK))
+        board.add(Move(Point(Vertical(2), Horizontal(2)), Stone.WHITE))
         val expected = listOf(Direction.Right)
-        assertEquals(expected, board.getTurnableDirections(BoardStone(Point(VerticalCoordinate(2),HorizontalCoordinate(1)),Stone.BLACK)))
+        assertEquals(expected, board.getTurnableDirections(BoardStone(Point(Vertical(2),Horizontal(1)),Stone.BLACK)))
     }
 
     @Test
     fun testGetTurnableDirectionsInParticularCase2() {
         val board = Board()
-        board.add(Move(Point(VerticalCoordinate(6), HorizontalCoordinate(5)), Stone.BLACK))
-        board.add(Move(Point(VerticalCoordinate(4), HorizontalCoordinate(6)), Stone.WHITE))
-        board.add(Move(Point(VerticalCoordinate(3), HorizontalCoordinate(4)), Stone.BLACK))
-        board.add(Move(Point(VerticalCoordinate(2), HorizontalCoordinate(3)), Stone.WHITE))
-        board.add(Move(Point(VerticalCoordinate(2), HorizontalCoordinate(4)), Stone.BLACK))
+        board.add(Move(Point(Vertical(6), Horizontal(5)), Stone.BLACK))
+        board.add(Move(Point(Vertical(4), Horizontal(6)), Stone.WHITE))
+        board.add(Move(Point(Vertical(3), Horizontal(4)), Stone.BLACK))
+        board.add(Move(Point(Vertical(2), Horizontal(3)), Stone.WHITE))
+        board.add(Move(Point(Vertical(2), Horizontal(4)), Stone.BLACK))
         assertTrue { !board.getValidPoints(Stone.WHITE).contains(Point.at(3,4))}
     }
 
     @Test
     fun testGetEmptyTurnableDirections() {
-        assertEquals(emptyList(), Board().getTurnableDirections(BoardStone(Point(VerticalCoordinate(1), HorizontalCoordinate(1)),Stone.BLACK)))
+        assertEquals(emptyList(), Board().getTurnableDirections(BoardStone(Point(Vertical(1), Horizontal(1)),Stone.BLACK)))
     }
 
     @Test
@@ -81,10 +81,10 @@ class BoardTest {
         val board = Board()
         val black = Stone.BLACK
         val white = Stone.WHITE
-        assertEquals(white,board.getStoneAt(Point(VerticalCoordinate(4), HorizontalCoordinate(4))))
-        assertEquals(black,board.getStoneAt(Point(VerticalCoordinate(4), HorizontalCoordinate(5))))
-        assertEquals(black,board.getStoneAt(Point(VerticalCoordinate(5), HorizontalCoordinate(4))))
-        assertEquals(white,board.getStoneAt(Point(VerticalCoordinate(5), HorizontalCoordinate(5))))
+        assertEquals(white,board.getStoneAt(Point(Vertical(4), Horizontal(4))))
+        assertEquals(black,board.getStoneAt(Point(Vertical(4), Horizontal(5))))
+        assertEquals(black,board.getStoneAt(Point(Vertical(5), Horizontal(4))))
+        assertEquals(white,board.getStoneAt(Point(Vertical(5), Horizontal(5))))
     }
 
     @Test
@@ -104,11 +104,11 @@ class BoardTest {
     fun testGetBoardStones() {
         val board = Board()
         val stones = TargetBoardStones(listOf(
-            BoardStone(Point(VerticalCoordinate(4), HorizontalCoordinate(5)), Stone.BLACK),
-            BoardStone(Point(VerticalCoordinate(4), HorizontalCoordinate(4)), Stone.WHITE),
-            BoardStone(Point(VerticalCoordinate(4), HorizontalCoordinate(3)), Stone.NONE),
-            BoardStone(Point(VerticalCoordinate(4), HorizontalCoordinate(2)), Stone.NONE),
-            BoardStone(Point(VerticalCoordinate(4), HorizontalCoordinate(1)), Stone.NONE)))
+            BoardStone(Point(Vertical(4), Horizontal(5)), Stone.BLACK),
+            BoardStone(Point(Vertical(4), Horizontal(4)), Stone.WHITE),
+            BoardStone(Point(Vertical(4), Horizontal(3)), Stone.NONE),
+            BoardStone(Point(Vertical(4), Horizontal(2)), Stone.NONE),
+            BoardStone(Point(Vertical(4), Horizontal(1)), Stone.NONE)))
         assertEquals(stones,board.getBoardStones(Point.at(4,6), Direction.Left))
     }
 
@@ -116,10 +116,10 @@ class BoardTest {
     fun testGetBoardStonesToTopRight() {
         val board = Board()
         val stones = TargetBoardStones(listOf(
-            BoardStone(Point(VerticalCoordinate(5), HorizontalCoordinate(5)), Stone.WHITE),
-            BoardStone(Point(VerticalCoordinate(4), HorizontalCoordinate(6)), Stone.NONE),
-            BoardStone(Point(VerticalCoordinate(3), HorizontalCoordinate(7)), Stone.NONE),
-            BoardStone(Point(VerticalCoordinate(2), HorizontalCoordinate(8)), Stone.NONE)))
+            BoardStone(Point(Vertical(5), Horizontal(5)), Stone.WHITE),
+            BoardStone(Point(Vertical(4), Horizontal(6)), Stone.NONE),
+            BoardStone(Point(Vertical(3), Horizontal(7)), Stone.NONE),
+            BoardStone(Point(Vertical(2), Horizontal(8)), Stone.NONE)))
         assertEquals(stones,board.getBoardStones(Point.at(6,4), Direction.TopRight))
     }
 
@@ -127,13 +127,13 @@ class BoardTest {
     fun testGetBoardStonesFromLeftEdgeToRight() {
         val board = Board()
         val stones = TargetBoardStones(listOf(
-            BoardStone(Point(VerticalCoordinate(1), HorizontalCoordinate(2)), Stone.NONE),
-            BoardStone(Point(VerticalCoordinate(1), HorizontalCoordinate(3)), Stone.NONE),
-            BoardStone(Point(VerticalCoordinate(1), HorizontalCoordinate(4)), Stone.NONE),
-            BoardStone(Point(VerticalCoordinate(1), HorizontalCoordinate(5)), Stone.NONE),
-            BoardStone(Point(VerticalCoordinate(1), HorizontalCoordinate(6)), Stone.NONE),
-            BoardStone(Point(VerticalCoordinate(1), HorizontalCoordinate(7)), Stone.NONE),
-            BoardStone(Point(VerticalCoordinate(1), HorizontalCoordinate(8)), Stone.NONE)))
+            BoardStone(Point(Vertical(1), Horizontal(2)), Stone.NONE),
+            BoardStone(Point(Vertical(1), Horizontal(3)), Stone.NONE),
+            BoardStone(Point(Vertical(1), Horizontal(4)), Stone.NONE),
+            BoardStone(Point(Vertical(1), Horizontal(5)), Stone.NONE),
+            BoardStone(Point(Vertical(1), Horizontal(6)), Stone.NONE),
+            BoardStone(Point(Vertical(1), Horizontal(7)), Stone.NONE),
+            BoardStone(Point(Vertical(1), Horizontal(8)), Stone.NONE)))
         assertEquals(stones,board.getBoardStones(Point.at(1,1), Direction.Right))
     }
 

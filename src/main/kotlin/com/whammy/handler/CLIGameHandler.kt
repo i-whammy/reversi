@@ -31,7 +31,7 @@ class CLIGameHandler() : GameHandler {
         board.printBoard()
         try {
             val (v, h) = readLine()!!.split(" ").map { it.toInt() }
-            val move = Move(Point(VerticalCoordinate(v), HorizontalCoordinate(h)), Stone.BLACK)
+            val move = Move(Point(Vertical(v), Horizontal(h)), Stone.BLACK)
             board.add(move).printBoard()
         } catch (e: OutOfRangeException) {
             println(e.message)

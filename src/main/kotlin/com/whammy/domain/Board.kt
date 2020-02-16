@@ -15,11 +15,11 @@ class Board {
     fun add(move: Move) : Board {
         val turnableDirections = this.getTurnableDirections(BoardStone(move.point, move.stone))
         if (turnableDirections.isEmpty()) throw NoTurnableStoneException("No turnable stones found.")
-        this.lines[move.point.verticalCoordinate.value - 1].stones[move.point.horizontalCoordinate.value - 1] = move.stone
+        this.lines[move.point.vertical.value - 1].stones[move.point.horizontal.value - 1] = move.stone
         turnableDirections.forEach {direction ->
             val targetBoardStones = getBoardStones(move.point, direction).getTurnoverTargetStones(BoardStone(move.point, move.stone))
             targetBoardStones.stones.forEach {
-                this.lines[it.point.verticalCoordinate.value-1].stones[it.point.horizontalCoordinate.value-1] = move.stone
+                this.lines[it.point.vertical.value-1].stones[it.point.horizontal.value-1] = move.stone
             }
         }
         return this
@@ -35,7 +35,7 @@ class Board {
     }
 
     fun getStoneAt(point: Point): Stone {
-        return this.lines[point.verticalCoordinate.value-1].stones[point.horizontalCoordinate.value-1]
+        return this.lines[point.vertical.value-1].stones[point.horizontal.value-1]
     }
 
     fun getStoneAt(point: Point, direction: Direction): BoardStone  {
