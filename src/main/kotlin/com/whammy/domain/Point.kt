@@ -7,9 +7,6 @@ data class Point(val vertical: Vertical, val horizontal: Horizontal) {
         fun at(v: Int, h: Int) = Point(Vertical(v), Horizontal(h))
     }
 
-    fun isEdge() = vertical.isTopEdge() || vertical.isBottomEdge()
-            || horizontal.isLeftEdge() || horizontal.isRightEdge()
-
     fun isEdgeOf(direction: Direction): Boolean {
         try {
             getAdjacentAt(direction)
@@ -37,16 +34,12 @@ data class Vertical(val value: Int) {
     init {
         if (1 > value || 8 < value) throw OutOfRangeException("You must input number between 1 and 8.")
     }
-    fun isTopEdge() = value == 1
-    fun isBottomEdge() = value == 8
 }
 
 data class Horizontal(val value: Int) {
     init {
         if (1 > value || 8 < value) throw OutOfRangeException("You must input number between 1 and 8.")
     }
-    fun isLeftEdge() = value == 1
-    fun isRightEdge() = value == 8
 }
 
 class OutOfRangeException(override val message: String): Exception()
